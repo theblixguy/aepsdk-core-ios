@@ -27,7 +27,7 @@ public final class MobileCore: NSObject {
         return ConfigurationConstants.EXTENSION_VERSION + "-" + wrapperType.rawValue
     }
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
         @objc public static var messagingDelegate: MessagingDelegate? {
             @available(*, unavailable)
             get { ServiceProvider.shared.messagingDelegate }
@@ -46,7 +46,7 @@ public final class MobileCore: NSObject {
         let idParser = IDParser()
         V4Migrator(idParser: idParser).migrate() // before starting SDK, migrate from v4 if needed
         V5Migrator(idParser: idParser).migrate() // before starting SDK, migrate from v5 if needed
-        #if os(iOS)
+        #if os(iOS) || os(visionOS)
             UserDefaultsMigrator().migrate() // before starting SDK, migrate from UserDefaults if needed
         #endif
         // Invoke registerExtension on legacy extensions

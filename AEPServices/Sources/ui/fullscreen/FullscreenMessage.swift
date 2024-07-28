@@ -10,7 +10,7 @@
  governing permissions and limitations under the License.
  */
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
     import Foundation
     import UIKit
     import WebKit
@@ -122,11 +122,13 @@
 
                 // add observer to handle device rotation
                 if !self.observerSet {
+                    #if os(iOS)
                     NotificationCenter.default.addObserver(self,
                                                            selector: #selector(self.handleDeviceRotation(notification:)),
                                                            name: UIDevice.orientationDidChangeNotification,
                                                            object: nil)
                     self.observerSet = true
+                    #endif
                 }
 
                 // create the webview

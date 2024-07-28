@@ -18,7 +18,7 @@ import Foundation
 public class ServiceProvider {
     public static let shared = ServiceProvider()
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
         /// MessagingDelegate which is used to listen for message visibility updates.
         public weak var messagingDelegate: MessagingDelegate?
     #endif
@@ -28,7 +28,7 @@ public class ServiceProvider {
     private var overrideSystemInfoService: SystemInfoService?
     private var defaultSystemInfoService = ApplicationSystemInfoService()
     private var overrideKeyValueService: NamedCollectionProcessing?
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
         private var defaultKeyValueService = FileSystemNamedCollection()
     #elseif os(tvOS)
         private var defaultKeyValueService = UserDefaultsNamedCollection()
@@ -119,7 +119,7 @@ public class ServiceProvider {
     internal func reset() {
         queue.async {
             self.defaultSystemInfoService = ApplicationSystemInfoService()
-            #if os(iOS)
+            #if os(iOS) || os(visionOS)
                 self.defaultKeyValueService = FileSystemNamedCollection()
             #elseif os(tvOS)
                 self.defaultKeyValueService = UserDefaultsNamedCollection()
@@ -149,7 +149,7 @@ extension ServiceProvider {
     private struct Holder {
         static var overrideURLService: URLOpening?
         static var defaultURLService = URLService()
-        #if os(iOS)
+        #if os(iOS) || os(visionOS)
             static var overrideUIService: UIService?
             static var defaultUIService = AEPUIService()
         #endif
@@ -168,7 +168,7 @@ extension ServiceProvider {
         }
     }
 
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
         public var uiService: UIService {
             get {
                 return queue.sync {

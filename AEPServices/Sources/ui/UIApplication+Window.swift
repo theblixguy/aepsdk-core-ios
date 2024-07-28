@@ -9,13 +9,17 @@
  OF ANY KIND, either express or implied. See the License for the specific language
  governing permissions and limitations under the License.
  */
-#if os(iOS)
+#if os(iOS) || os(visionOS)
     import Foundation
     import UIKit
 
     internal extension UIApplication {
         func getKeyWindow() -> UIWindow? {
+            #if os(visionOS)
+            windows.first
+            #elseif os(iOS)
             keyWindow ?? windows.first
+            #endif
         }
     }
 #endif

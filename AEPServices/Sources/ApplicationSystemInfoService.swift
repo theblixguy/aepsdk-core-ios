@@ -97,7 +97,7 @@ class ApplicationSystemInfoService: SystemInfoService {
     }
 
     func getMobileCarrierName() -> String? {
-        #if targetEnvironment(macCatalyst) || os(tvOS)
+        #if targetEnvironment(macCatalyst) || os(tvOS) || os(visionOS)
             return "unknown"
         #else
             let networkInfo = CTTelephonyNetworkInfo()
@@ -153,6 +153,8 @@ class ApplicationSystemInfoService: SystemInfoService {
             return "ios"
         #elseif os(tvOS)
             return "tvos"
+        #elseif os(visionOS)
+            return "visionos"
         #endif
     }
 
@@ -205,11 +207,19 @@ class ApplicationSystemInfoService: SystemInfoService {
 
 struct NativeDisplayInformation {
     private var screenRect: CGRect {
+        #if os(visionOS)
+        return .zero
+        #else
         UIScreen.main.bounds
+        #endif
     }
 
     private var screenScale: CGFloat {
+        #if os(visionOS)
+        return 1.0
+        #else
         UIScreen.main.scale
+        #endif
     }
 
     var widthPixels: Int {

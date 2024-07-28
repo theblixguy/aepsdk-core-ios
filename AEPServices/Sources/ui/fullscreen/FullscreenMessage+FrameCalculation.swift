@@ -10,7 +10,7 @@
  governing permissions and limitations under the License.
  */
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
     import Foundation
     import UIKit
 
@@ -83,7 +83,11 @@
                 }
             }
 
+            #if os(iOS)
             return UIScreen.main.bounds.width
+            #else
+            return 1280.0
+            #endif
         }
 
         /// returns the height of the screen, measured in points
@@ -96,7 +100,11 @@
                 }
             }
 
+            #if os(iOS)
             return isVAlignBottom ? UIScreen.main.bounds.height : UIScreen.main.bounds.height - safeAreaHeight
+            #else
+            return 720.0
+            #endif
         }
 
         /// calculates the safe area at the top of the screen, measured by status bar and/or notch
@@ -110,7 +118,11 @@
             if #available(iOS 13.0, *) {
                 return UIApplication.shared.getKeyWindow()?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
             } else {
+                #if os(iOS)
                 return UIApplication.shared.statusBarFrame.height
+                #else
+                return 0
+                #endif
             }
         }
 
